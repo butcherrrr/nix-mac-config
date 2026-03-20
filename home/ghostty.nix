@@ -1,0 +1,19 @@
+{ ... }:
+
+{
+  home.file.".config/ghostty/config".text = ''
+    font-family = "JetBrains Mono"
+    font-size = 22
+    window-padding-x = 32,32
+    window-padding-y = 32,32
+    window-padding-balance = true
+    macos-titlebar-style = hidden
+    macos-window-shadow = false
+    window-theme = auto
+    window-title-font-family = "JetBrains Mono"
+    theme = Nord
+    background-opacity = 0.95
+    background-blur = 10
+    cursor-style = bar
+  '';
+}
