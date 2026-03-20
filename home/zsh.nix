@@ -3,7 +3,7 @@
 {
   programs.zsh = {
     enable = true;
-
+    enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
@@ -23,25 +23,6 @@
     sessionVariables = {
       EDITOR = "nvim";
       BAT_THEME = "Nord";
-      FZF_TMUX_OPTS = "-p 90%,70%";
-      FZF_DEFAULT_OPTS = ''
-        --color=bg:-1,bg+:-1
-        --color=fg:#d8dee9,fg+:#eceff4
-        --color=hl:#ebcb8b,hl+:#d08770
-        --color=prompt:#a3be8c
-        --color=pointer:#5e81ac,marker:#88c0d0
-        --color=border:#4c566a,separator:#434c5e,scrollbar:#3b4252
-        --color=info:#b48ead,header:#8fbcbb
-        --color=spinner:#81a1c1
-        --border=rounded
-        --separator='─'
-        --scrollbar='│'
-        --layout=reverse
-        --info=inline-right
-        --margin=5%,5%
-        --prompt='❯ '
-        --pointer=''
-        --marker='''';
     };
 
     initExtraFirst = ''
@@ -55,15 +36,6 @@
       # Load Powerlevel10k theme
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-
-      # Initialize zoxide
-      eval "$(zoxide init zsh)"
-
-      # Load thefuck alias
-      eval "$(thefuck --alias)"
-
-      # fzf keybindings
-      [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
       # Load work helpers (if they exist)
       [ -f "$HOME/dev/.work-helpers.sh" ] && source "$HOME/dev/.work-helpers.sh"
@@ -95,6 +67,45 @@
 
       ${builtins.readFile ./brew-helpers.zsh}
     '';
+  };
+
+  # fzf — shell integration (keybindings + completion)
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    tmux.enableShellIntegration = true;
+    defaultOptions = [
+      "--color=bg:-1,bg+:-1"
+      "--color=fg:#d8dee9,fg+:#eceff4"
+      "--color=hl:#ebcb8b,hl+:#d08770"
+      "--color=prompt:#a3be8c"
+      "--color=pointer:#5e81ac,marker:#88c0d0"
+      "--color=border:#4c566a,separator:#434c5e,scrollbar:#3b4252"
+      "--color=info:#b48ead,header:#8fbcbb"
+      "--color=spinner:#81a1c1"
+      "--border=rounded"
+      "--separator=─"
+      "--scrollbar=│"
+      "--layout=reverse"
+      "--info=inline-right"
+      "--margin=5%,5%"
+      "--prompt=❯ "
+      "--pointer="
+      "--marker="
+    ];
+    tmux.shellIntegrationOptions = [ "-p 90%,70%" ];
+  };
+
+  # zoxide — smart cd
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  # thefuck — command correction
+  programs.thefuck = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   home.packages = with pkgs; [
